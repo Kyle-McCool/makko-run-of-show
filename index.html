@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Makko Run of Show</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Makko brand */
+    --bg: #0a1020;
+    --bg-deep: #070b18;
+    --surface: #0f172a;
+    --surface-hi: #141d36;
+    --line: #2e3650;
+    --line-soft: #1c2440;
+    --text: #ffffff;
+    --text-body: #c9d4e8;
+    --text-dim: #8893b0;
+    --text-mute: #5a6688;
+    --accent: #3b8edf;
+    --accent-hi: #5aa3eb;
+    --accent-deep: #2b6cb0;
+    --warn: #f5b942;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text-body);
+    font-family: 'Inter', Georgia, sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    display: flex;
+    height: 100vh;
+    position: relative;
+    background:
+      radial-gradient(ellipse 70% 55% at 30% 35%, rgba(59,142,223,0.08), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 75% 80%, rgba(59,142,223,0.04), transparent 60%),
+      var(--bg);
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .show-progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.04);
+    z-index: 10;
+  }
+  .show-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent), var(--accent-hi));
+    transition: width 0.4s ease;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 56px 64px 36px 64px;
+    min-width: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Top status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: auto;
+    gap: 24px;
+  }
+  .status-left, .status-right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .on-air {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    transition: color 0.3s;
+  }
+  .on-air-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--text-mute);
+    transition: all 0.3s;
+  }
+  .on-air.live { color: var(--danger); }
+  .on-air.live .on-air-dot {
+    background: var(--danger);
+    box-shadow: 0 0 0 0 rgba(239,68,68,0.6);
+    animation: pulse 1.4s ease-out infinite;
+  }
+  .on-air.scheduled { color: var(--accent); }
+  .on-air.scheduled .on-air-dot {
+    background: var(--accent);
+    animation: pulseBlue 2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.6); }
+    70% { box-shadow: 0 0 0 14px rgba(239,68,68,0); }
+    100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+  }
+  @keyframes pulseBlue {
+    0% { box-shadow: 0 0 0 0 rgba(59,142,223,0.5); }
+    70% { box-shadow: 0 0 0 12px rgba(59,142,223,0); }
+    100% { box-shadow: 0 0 0 0 rgba(59,142,223,0); }
+  }
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+  .meta strong {
+    color: var(--text);
+    font-weight: 500;
+    margin-left: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .seg-counter {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    color: var(--text-dim);
+    line-height: 1;
+  }
+  .seg-counter strong {
+    color: var(--accent);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+  .sync-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sync-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-body);
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-width: auto;
+  }
+  .sync-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .sync-btn.copied {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(59,142,223,0.08);
+  }
+
+  /* Stage */
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+  }
+  .pre-roll {
+    display: none;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .pre-roll.visible { display: block; }
+  .pre-roll-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .pre-roll-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(60px, 9vw, 140px);
+    font-weight: 500;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .pre-roll-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 14px;
+  }
+
+  .segment-name {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 28px;
+    max-width: 90%;
+  }
+  .timer-shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .timer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(180px, 22vw, 340px);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.06em;
+    line-height: 0.9;
+    color: var(--text);
+    transition: color 0.25s ease;
+    text-shadow: 0 0 60px rgba(255,255,255,0.04);
+  }
+  .timer.warn {
+    color: var(--warn);
+    text-shadow: 0 0 80px rgba(245,185,66,0.22);
+  }
+  .timer.danger {
+    color: var(--danger);
+    text-shadow: 0 0 80px rgba(239,68,68,0.3);
+  }
+  .segment-progress {
+    width: min(640px, 80%);
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .segment-progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.4s linear, background 0.25s;
+  }
+  .timer.warn ~ .segment-progress .segment-progress-fill { background: var(--warn); }
+  .timer.danger ~ .segment-progress .segment-progress-fill { background: var(--danger); }
+
+  .flash-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--danger);
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .flash-overlay.active {
+    animation: hardFlash 0.6s ease-in-out infinite;
+  }
+  @keyframes hardFlash {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.55; }
+  }
+
+  /* Bottom row */
+  .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+    gap: 40px;
+  }
+  .controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  button {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 14px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    border-radius: 0;
+    min-width: 110px;
+  }
+  button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(59,142,223,0.04);
+  }
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    font-weight: 700;
+  }
+  button.primary:hover {
+    background: var(--accent-hi);
+    border-color: var(--accent-hi);
+    color: #ffffff;
+  }
+  button .kbd {
+    margin-left: 10px;
+    opacity: 0.55;
+    font-weight: 400;
+  }
+  .time-blocks {
+    display: flex;
+    gap: 36px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .time-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: right;
+  }
+  .time-block .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+  .time-block .value {
+    font-size: 22px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .time-block.accent .value { color: var(--accent); }
+
+  /* Sidebar */
+  .sidebar {
+    width: 420px;
+    background: var(--surface);
+    border-left: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-head {
+    padding: 32px 32px 22px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sidebar-brand {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .sidebar-title {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .sidebar-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-top: 10px;
+  }
+  .sidebar-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0 20px 0;
+  }
+  .sidebar-list::-webkit-scrollbar { width: 6px; }
+  .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+  .seg {
+    padding: 18px 32px;
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  .seg:hover { background: rgba(255,255,255,0.02); }
+  .seg-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    color: var(--text-mute);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .seg-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .seg-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .seg-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.45;
+    letter-spacing: 0;
+    margin-top: 2px;
+  }
+  .seg.completed .seg-desc {
+    color: rgba(255, 255, 255, 0.22);
+  }
+  .seg.active .seg-desc {
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .seg-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+  .seg-dur {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  .seg-bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--line-soft);
+  }
+  .seg-bar-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.4s linear;
+  }
+
+  .seg.completed .seg-num,
+  .seg.completed .seg-name,
+  .seg.completed .seg-dur {
+    color: var(--text-mute);
+  }
+  .seg.completed .seg-name {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-mute);
+    text-decoration-thickness: 1px;
+  }
+  .seg.completed .seg-bar-fill {
+    width: 100% !important;
+    background: var(--text-mute);
+    opacity: 0.45;
+  }
+
+  .seg.active {
+    background: linear-gradient(90deg, rgba(59,142,223,0.10), transparent 80%);
+    border-left-color: var(--accent);
+  }
+  .seg.active .seg-num { color: var(--accent); }
+  .seg.active .seg-name { color: var(--text); font-weight: 600; }
+  .seg.active .seg-tag { color: var(--accent); }
+  .seg.active .seg-dur { color: var(--accent); }
+
+  /* Show complete */
+  .stage.complete .segment-name,
+  .stage.complete .timer-shell,
+  .stage.complete .pre-roll { display: none; }
+  .complete-banner {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: clamp(72px, 10vw, 160px);
+    color: var(--accent);
+    line-height: 1;
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+  .complete-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-top: 24px;
+  }
+
+  /* Schedule modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(7,11,24,0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    width: 100%;
+    max-width: 480px;
+    padding: 36px;
+    position: relative;
+  }
+  .modal-head {
+    margin-bottom: 24px;
+  }
+  .modal-title {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 36px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .modal-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-body);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .modal-field label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+  .modal-field input {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+    font-variant-numeric: tabular-nums;
+  }
+  .modal-field input:focus {
+    border-color: var(--accent);
+  }
+  .modal-share {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display: none;
+  }
+  .modal-share.visible { display: block; }
+  .modal-share-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .modal-share input {
+    flex: 1;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    color: var(--text-body);
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    outline: none;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 28px;
+  }
+  .modal-actions button { flex: 1; }
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-mute);
+    cursor: pointer;
+    padding: 6px;
+    font-family: inherit;
+    font-size: 16px;
+    min-width: auto;
+    letter-spacing: 0;
+  }
+  .modal-close:hover { color: var(--text); background: transparent; border: none; }
+
+  /* Hint */
+  .hint {
+    position: fixed;
+    bottom: 18px;
+    left: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    z-index: 3;
+    display: flex;
+    gap: 18px;
+  }
+  .hint span { display: flex; align-items: center; gap: 6px; }
+  .hint kbd {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 2px 6px;
+    font-size: 10px;
+    color: var(--text-dim);
+    border-radius: 2px;
+  }
+
+  @media (max-width: 1100px) {
+    .sidebar { width: 340px; }
+    .main { padding: 40px 32px 32px; }
+    .time-blocks { gap: 22px; }
+    .hint { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="show-progress"><div class="show-progress-fill" id="showProgressFill"></div></div>
+  <div class="flash-overlay" id="flashOverlay"></div>
+
+  <div class="main">
+    <div class="status-bar">
+      <div class="status-left">
+        <div class="on-air" id="onAir">
+          <span class="on-air-dot"></span>
+          <span id="onAirLabel">Standby</span>
+        </div>
+        <div class="meta">Elapsed <strong id="elapsed">00:00:00</strong></div>
+      </div>
+      <div class="status-right">
+        <div class="seg-counter"><strong id="segCurrent">01</strong> <span style="opacity:.5">/ 15</span></div>
+        <div class="sync-controls">
+          <button class="sync-btn" id="btnSchedule">Schedule</button>
+          <button class="sync-btn" id="btnShare">Share</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="pre-roll" id="preRoll">
+        <div class="pre-roll-label">Show starts in</div>
+        <div class="pre-roll-time" id="preRollTime">00:00</div>
+        <div class="pre-roll-sub" id="preRollSub">Synced across all timers</div>
+      </div>
+
+      <div class="segment-name" id="segmentName">Hook</div>
+      <div class="timer-shell">
+        <div class="timer" id="timer">3:00</div>
+        <div class="segment-progress"><div class="segment-progress-fill" id="segmentProgressFill"></div></div>
+      </div>
+      <div class="complete-banner" id="completeBanner" style="display:none">Show Complete</div>
+      <div class="complete-sub" id="completeSub" style="display:none">— That's a wrap —</div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="controls">
+        <button class="primary" id="btnPlay">Play <span class="kbd">␣</span></button>
+        <button id="btnReset">Reset <span class="kbd">R</span></button>
+        <button id="btnPrev">Prev <span class="kbd">←</span></button>
+        <button id="btnNext">Next <span class="kbd">→</span></button>
+      </div>
+      <div class="time-blocks">
+        <div class="time-block">
+          <div class="label">Remaining</div>
+          <div class="value" id="totalRemaining">3:05:00</div>
+        </div>
+        <div class="time-block accent">
+          <div class="label">ETA</div>
+          <div class="value" id="eta">—:—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-brand">Makko · Live</div>
+      <div class="sidebar-title">Run of Show</div>
+      <div class="sidebar-sub" id="sidebarSub">15 Segments</div>
+    </div>
+    <div class="sidebar-list" id="sidebar"></div>
+  </aside>
+
+  <div class="hint">
+    <span><kbd>Space</kbd> Play / Pause</span>
+    <span><kbd>←</kbd> Prev</span>
+    <span><kbd>→</kbd> Next</span>
+    <span><kbd>R</kbd> Reset</span>
+  </div>
+
+  <!-- Schedule / Sync Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+      <div class="modal-head">
+        <div class="modal-title">Sync the show</div>
+        <div class="modal-sub">Pick a start time. Every timer that loads this link will start at the same moment, synced to each device's system clock.</div>
+      </div>
+      <div class="modal-field">
+        <label for="startTime">Start time</label>
+        <input type="datetime-local" id="startTime">
+      </div>
+      <div class="modal-share" id="modalShare">
+        <label style="font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-mute);">Shareable link</label>
+        <div class="modal-share-row">
+          <input type="text" id="shareUrl" readonly>
+          <button id="btnCopy">Copy</button>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="btnClearSchedule">Clear</button>
+        <button class="primary" id="btnSetSchedule">Set & Sync</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const SEGMENTS = [
+  { name: "Hook",                     tag: "INTRO",    duration: 3 * 60,  desc: "Tony cold opens -- states Brandon's project, the 3 open loops, and platform logistics" },
+  { name: "A1 — Collections",         tag: "ACT I",    duration: 15 * 60, desc: "Tony explains Collections live -- what it is, why it matters, how context works" },
+  { name: "A2 — Sector Scavengers",   tag: "ACT I",    duration: 12 * 60, desc: "Tony shares his specific wall this week in Sector Scavengers" },
+  { name: "A3 — Project Walkthrough", tag: "ACT I",    duration: 25 * 60, desc: "Brandon opens his project live -- Tony and Brandon decide together what it needs" },
+  { name: "Natural Break",            tag: "INTERVAL", duration: 5 * 60,  desc: "Energy reset -- Dragoon posts giveaway in chat independently" },
+  { name: "B1 — Build",               tag: "ACT II",   duration: 15 * 60, desc: "Brandon starts building based on what was decided in A3" },
+  { name: "Asset Reveal · Clip 1",    tag: "VIDEO",    duration: 3 * 60,  desc: "Kyle pulls up Cesar's pre-generated assets -- Brandon sees them for the first time live" },
+  { name: "B2 — Build Continues",     tag: "ACT II",   duration: 17 * 60, desc: "Brandon integrates assets and keeps building" },
+  { name: "B3 — Progress Check",      tag: "ACT II",   duration: 20 * 60, desc: "How far has Brandon gotten? What is working, what is not?" },
+  { name: "Natural Break",            tag: "INTERVAL", duration: 5 * 60,  desc: "Energy reset -- Dragoon posts second giveaway in chat independently" },
+  { name: "C1 — Reorient",            tag: "ACT III",  duration: 5 * 60,  desc: "Tony states the final objective out loud -- does it work by 3 PM or not?" },
+  { name: "C2 — Final Build",         tag: "ACT III",  duration: 30 * 60, desc: "Last push -- Brandon has 30 minutes to finish or fail live" },
+  { name: "Game Test · Clip 2",       tag: "VIDEO",    duration: 5 * 60,  desc: "Brandon plays what was built -- works or does not, both are valid" },
+  { name: "C3 — Retrospective",       tag: "ACT III",  duration: 10 * 60, desc: "Tony asks 4 questions: what did you set out to build, what got built, what broke, what does that tell us about next week" },
+  { name: "Outro",                    tag: "OUTRO",    duration: 5 * 60,  desc: "Tony delivers CTA -- makko.ai and discord.gg/makko, nothing else" },
+];
+
+const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
+
+// Build cumulative offsets (seconds from show start to start of each segment)
+const OFFSETS = (() => {
+  const arr = [0];
+  for (let i = 0; i < SEGMENTS.length; i++) arr.push(arr[i] + SEGMENTS[i].duration);
+  return arr;
+})();
+
+// State
+let scheduledStart = null; // unix ms, or null
+let manualMode = false;    // if true, ignore scheduled start (user took manual control)
+let currentIndex = 0;
+let remaining = SEGMENTS[0].duration;
+let playing = false;
+let lastTick = null;
+let rafId = null;
+let advanceTimer = null;
+let showComplete = false;
+let elapsedTotal = 0;
+let lastFlashIndex = -1;
+
+const el = (id) => document.getElementById(id);
+const $stage = el('stage');
+const $name = el('segmentName');
+const $timer = el('timer');
+const $total = el('totalRemaining');
+const $eta = el('eta');
+const $elapsed = el('elapsed');
+const $segCurrent = el('segCurrent');
+const $sidebar = el('sidebar');
+const $btnPlay = el('btnPlay');
+const $btnReset = el('btnReset');
+const $btnPrev = el('btnPrev');
+const $btnNext = el('btnNext');
+const $btnSchedule = el('btnSchedule');
+const $btnShare = el('btnShare');
+const $onAir = el('onAir');
+const $onAirLabel = el('onAirLabel');
+const $flash = el('flashOverlay');
+const $showProgressFill = el('showProgressFill');
+const $segmentProgressFill = el('segmentProgressFill');
+const $completeBanner = el('completeBanner');
+const $completeSub = el('completeSub');
+const $preRoll = el('preRoll');
+const $preRollTime = el('preRollTime');
+const $preRollSub = el('preRollSub');
+const $modal = el('modal');
+const $modalClose = el('modalClose');
+const $startTime = el('startTime');
+const $modalShare = el('modalShare');
+const $shareUrl = el('shareUrl');
+const $btnCopy = el('btnCopy');
+const $btnSetSchedule = el('btnSetSchedule');
+const $btnClearSchedule = el('btnClearSchedule');
+
+function fmtMS(s) {
+  s = Math.max(0, Math.ceil(s));
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ':' + String(sec).padStart(2, '0');
+}
+function fmtMMSS(s) {
+  s = Math.max(0, Math.ceil(s));
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+function fmtHMS(s) {
+  s = Math.max(0, Math.ceil(s));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+function fmtTotal(s) {
+  s = Math.max(0, Math.ceil(s));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return h + ':' + String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+  return m + ':' + String(sec).padStart(2, '0');
+}
+function fmtClock(d) {
+  let h = d.getHours();
+  const m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; if (h === 0) h = 12;
+  return h + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+}
+
+function buildSidebar() {
+  $sidebar.innerHTML = '';
+  SEGMENTS.forEach((seg, i) => {
+    const div = document.createElement('div');
+    div.className = 'seg';
+    if (i < currentIndex) div.classList.add('completed');
+    if (i === currentIndex && !showComplete) div.classList.add('active');
+    let fillPct = 0;
+    if (i < currentIndex) fillPct = 100;
+    else if (i === currentIndex && !showComplete) {
+      fillPct = ((seg.duration - remaining) / seg.duration) * 100;
+    }
+    div.innerHTML =
+      '<div class="seg-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+      '<div class="seg-body">' +
+        '<div class="seg-tag">' + seg.tag + '</div>' +
+        '<div class="seg-name">' + seg.name + '</div>' +
+        (seg.desc ? '<div class="seg-desc">' + seg.desc + '</div>' : '') +
+      '</div>' +
+      '<div class="seg-dur">' + fmtMS(seg.duration) + '</div>' +
+      '<div class="seg-bar"><div class="seg-bar-fill" style="width:' + fillPct + '%"></div></div>';
+    div.addEventListener('click', () => {
+      manualMode = true;
+      jumpTo(i);
+    });
+    $sidebar.appendChild(div);
+  });
+}
+
+function render() {
+  if (showComplete) {
+    $stage.classList.add('complete');
+    $completeBanner.style.display = '';
+    $completeSub.style.display = '';
+    $total.textContent = '0:00';
+    $segCurrent.textContent = '15';
+    $btnPlay.firstChild.textContent = 'Play ';
+    $onAir.classList.remove('live');
+    $onAir.classList.remove('scheduled');
+    $onAirLabel.textContent = 'Off Air';
+    buildSidebar();
+    return;
+  }
+  $stage.classList.remove('complete');
+  $completeBanner.style.display = 'none';
+  $completeSub.style.display = 'none';
+
+  // Pre-roll
+  const now = Date.now();
+  const preRollActive = scheduledStart && !manualMode && now < scheduledStart;
+  if (preRollActive) {
+    $preRoll.classList.add('visible');
+    const secs = Math.ceil((scheduledStart - now) / 1000);
+    $preRollTime.textContent = fmtMMSS(secs);
+    const d = new Date(scheduledStart);
+    $preRollSub.textContent = 'Auto-start at ' + fmtClock(d);
+  } else {
+    $preRoll.classList.remove('visible');
+  }
+
+  const seg = SEGMENTS[currentIndex];
+  $name.textContent = seg.name;
+  $timer.textContent = fmtMS(remaining);
+  $timer.className = 'timer';
+  if (remaining <= 30 && remaining > 0) $timer.classList.add('danger');
+  else if (remaining <= 60) $timer.classList.add('warn');
+
+  const segPct = ((seg.duration - remaining) / seg.duration) * 100;
+  $segmentProgressFill.style.width = Math.max(0, Math.min(100, segPct)) + '%';
+
+  let totalRem = remaining;
+  for (let i = currentIndex + 1; i < SEGMENTS.length; i++) totalRem += SEGMENTS[i].duration;
+  $total.textContent = fmtTotal(totalRem);
+
+  // ETA: if scheduled and not started, ETA = start + total. Otherwise now + remaining.
+  let etaDate;
+  if (preRollActive) {
+    etaDate = new Date(scheduledStart + TOTAL_DURATION * 1000);
+  } else {
+    etaDate = new Date(Date.now() + totalRem * 1000);
+  }
+  $eta.textContent = fmtClock(etaDate);
+
+  const showPct = (elapsedTotal / TOTAL_DURATION) * 100;
+  $showProgressFill.style.width = Math.max(0, Math.min(100, showPct)) + '%';
+  $elapsed.textContent = fmtHMS(elapsedTotal);
+  $segCurrent.textContent = String(currentIndex + 1).padStart(2, '0');
+
+  $btnPlay.firstChild.textContent = playing ? 'Pause ' : 'Play ';
+
+  $onAir.classList.remove('live', 'scheduled');
+  if (playing) {
+    $onAir.classList.add('live');
+    $onAirLabel.textContent = 'On Air';
+  } else if (preRollActive) {
+    $onAir.classList.add('scheduled');
+    $onAirLabel.textContent = 'Scheduled';
+  } else {
+    $onAirLabel.textContent = 'Standby';
+  }
+
+  buildSidebar();
+}
+
+// Sync engine — when scheduledStart is set and not in manual mode, recompute state from wall clock
+function syncFromSchedule() {
+  if (!scheduledStart || manualMode) return false;
+  const now = Date.now();
+  if (now < scheduledStart) {
+    // pre-roll
+    currentIndex = 0;
+    remaining = SEGMENTS[0].duration;
+    elapsedTotal = 0;
+    playing = false;
+    showComplete = false;
+    return true;
+  }
+  const elapsed = (now - scheduledStart) / 1000;
+  if (elapsed >= TOTAL_DURATION) {
+    currentIndex = SEGMENTS.length - 1;
+    remaining = 0;
+    elapsedTotal = TOTAL_DURATION;
+    playing = false;
+    showComplete = true;
+    return true;
+  }
+  // Find current segment
+  let idx = 0;
+  for (let i = 0; i < SEGMENTS.length; i++) {
+    if (elapsed >= OFFSETS[i] && elapsed < OFFSETS[i + 1]) { idx = i; break; }
+  }
+  currentIndex = idx;
+  remaining = OFFSETS[idx + 1] - elapsed;
+  elapsedTotal = elapsed;
+  showComplete = false;
+  playing = true;
+  return true;
+}
+
+function tick(ts) {
+  // Scheduled mode: re-derive from wall clock every frame (perfect sync, no drift)
+  if (scheduledStart && !manualMode) {
+    const prevIdx = currentIndex;
+    const wasComplete = showComplete;
+    const changed = syncFromSchedule();
+    if (changed) render();
+    // Detect segment-end transitions to fire flash
+    if (!wasComplete && currentIndex !== prevIdx && prevIdx >= 0 && lastFlashIndex !== prevIdx) {
+      lastFlashIndex = prevIdx;
+      // Quick flash but don't pause (auto-advance is intrinsic)
+      $flash.classList.add('active');
+      setTimeout(() => $flash.classList.remove('active'), 800);
+    }
+    rafId = requestAnimationFrame(tick);
+    return;
+  }
+
+  // Manual mode tick
+  if (!playing) return;
+  if (lastTick === null) lastTick = ts;
+  const dt = (ts - lastTick) / 1000;
+  lastTick = ts;
+  remaining -= dt;
+  elapsedTotal += dt;
+  if (remaining <= 0) {
+    remaining = 0;
+    playing = false;
+    lastTick = null;
+    $flash.classList.add('active');
+    render();
+    advanceTimer = setTimeout(() => {
+      $flash.classList.remove('active');
+      advance(true);
+    }, 3000);
+    return;
+  }
+  render();
+  rafId = requestAnimationFrame(tick);
+}
+
+function startScheduledLoop() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(tick);
+}
+
+function play() {
+  if (showComplete) return;
+  manualMode = true; // taking manual control
+  if (playing) return;
+  playing = true;
+  lastTick = null;
+  rafId = requestAnimationFrame(tick);
+  render();
+}
+function pause() {
+  manualMode = true;
+  playing = false;
+  lastTick = null;
+  if (rafId) cancelAnimationFrame(rafId);
+  render();
+}
+function togglePlay() { playing ? pause() : play(); }
+
+function clearFlash() {
+  $flash.classList.remove('active');
+  if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+}
+
+function advance(autoResume) {
+  manualMode = true;
+  clearFlash();
+  if (currentIndex >= SEGMENTS.length - 1) {
+    currentIndex = SEGMENTS.length - 1;
+    remaining = 0;
+    playing = false;
+    showComplete = true;
+    render();
+    return;
+  }
+  currentIndex++;
+  remaining = SEGMENTS[currentIndex].duration;
+  lastTick = null;
+  if (autoResume) {
+    playing = true;
+    rafId = requestAnimationFrame(tick);
+  }
+  render();
+}
+
+function previous() {
+  manualMode = true;
+  clearFlash();
+  if (showComplete) {
+    showComplete = false;
+  } else if (currentIndex > 0) {
+    elapsedTotal = Math.max(0, elapsedTotal - (SEGMENTS[currentIndex].duration - remaining));
+    currentIndex--;
+    elapsedTotal = Math.max(0, elapsedTotal - SEGMENTS[currentIndex].duration);
+  }
+  remaining = SEGMENTS[currentIndex].duration;
+  lastTick = null;
+  render();
+}
+
+function resetCurrent() {
+  manualMode = true;
+  clearFlash();
+  if (showComplete) return;
+  const seg = SEGMENTS[currentIndex];
+  elapsedTotal = Math.max(0, elapsedTotal - (seg.duration - remaining));
+  remaining = seg.duration;
+  lastTick = null;
+  render();
+}
+
+function jumpTo(i) {
+  manualMode = true;
+  clearFlash();
+  if (i < 0 || i >= SEGMENTS.length) return;
+  showComplete = false;
+  let newElapsed = 0;
+  for (let k = 0; k < i; k++) newElapsed += SEGMENTS[k].duration;
+  elapsedTotal = newElapsed;
+  currentIndex = i;
+  remaining = SEGMENTS[i].duration;
+  lastTick = null;
+  render();
+}
+
+// Schedule handling
+function readHashSchedule() {
+  const m = window.location.hash.match(/start=([^&]+)/);
+  if (!m) return null;
+  const v = decodeURIComponent(m[1]);
+  const ts = isNaN(v) ? Date.parse(v) : Number(v);
+  if (!ts || isNaN(ts)) return null;
+  return ts;
+}
+
+function buildShareUrl(ts) {
+  const base = window.location.href.split('#')[0];
+  return base + '#start=' + ts;
+}
+
+function applySchedule(ts) {
+  scheduledStart = ts;
+  manualMode = false;
+  syncFromSchedule();
+  startScheduledLoop();
+  render();
+  // Update URL
+  const url = '#start=' + ts;
+  history.replaceState(null, '', url);
+}
+
+function clearSchedule() {
+  scheduledStart = null;
+  manualMode = false;
+  currentIndex = 0;
+  remaining = SEGMENTS[0].duration;
+  elapsedTotal = 0;
+  playing = false;
+  showComplete = false;
+  if (rafId) cancelAnimationFrame(rafId);
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+  render();
+}
+
+// Modal
+function openModal() {
+  // Pre-fill with scheduledStart or now+5min
+  const seed = scheduledStart || (Date.now() + 5 * 60 * 1000);
+  const d = new Date(seed);
+  // datetime-local format YYYY-MM-DDTHH:MM
+  const pad = n => String(n).padStart(2, '0');
+  $startTime.value = d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  if (scheduledStart) {
+    $modalShare.classList.add('visible');
+    $shareUrl.value = buildShareUrl(scheduledStart);
+  } else {
+    $modalShare.classList.remove('visible');
+  }
+  $modal.classList.add('open');
+}
+function closeModal() { $modal.classList.remove('open'); }
+
+$btnSchedule.addEventListener('click', openModal);
+$btnShare.addEventListener('click', () => {
+  if (!scheduledStart) { openModal(); return; }
+  const url = buildShareUrl(scheduledStart);
+  navigator.clipboard.writeText(url).then(() => {
+    $btnShare.classList.add('copied');
+    $btnShare.textContent = 'Copied';
+    setTimeout(() => {
+      $btnShare.classList.remove('copied');
+      $btnShare.textContent = 'Share';
+    }, 1600);
+  });
+});
+$modalClose.addEventListener('click', closeModal);
+$modal.addEventListener('click', (e) => { if (e.target === $modal) closeModal(); });
+$btnSetSchedule.addEventListener('click', () => {
+  const v = $startTime.value;
+  if (!v) return;
+  const ts = Date.parse(v);
+  if (isNaN(ts)) return;
+  applySchedule(ts);
+  $modalShare.classList.add('visible');
+  $shareUrl.value = buildShareUrl(ts);
+});
+$btnClearSchedule.addEventListener('click', () => {
+  clearSchedule();
+  closeModal();
+});
+$btnCopy.addEventListener('click', () => {
+  $shareUrl.select();
+  navigator.clipboard.writeText($shareUrl.value).then(() => {
+    $btnCopy.textContent = 'Copied';
+    setTimeout(() => { $btnCopy.textContent = 'Copy'; }, 1600);
+  });
+});
+
+$btnPlay.addEventListener('click', togglePlay);
+$btnReset.addEventListener('click', resetCurrent);
+$btnPrev.addEventListener('click', previous);
+$btnNext.addEventListener('click', () => advance(playing));
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  else if (e.code === 'ArrowRight') { e.preventDefault(); advance(playing); }
+  else if (e.code === 'ArrowLeft') { e.preventDefault(); previous(); }
+  else if (e.key === 'r' || e.key === 'R') { e.preventDefault(); resetCurrent(); }
+  else if (e.key === 'Escape') { closeModal(); }
+});
+
+// Header total
+(function setHeaderTotal() {
+  const h = Math.floor(TOTAL_DURATION / 3600);
+  const m = Math.floor((TOTAL_DURATION % 3600) / 60);
+  document.getElementById('sidebarSub').textContent = '15 Segments · ' + h + 'h ' + String(m).padStart(2, '0') + 'm';
+})();
+
+// Init from URL
+const urlStart = readHashSchedule();
+if (urlStart) {
+  applySchedule(urlStart);
+} else {
+  render();
+}
+</script>
+</body>
+</html>
