@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Makko Run of Show</title>
+<title>MAKE IT LIVE -- Ep 002 -- Run of Show</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -726,8 +726,8 @@
         <div class="timer" id="timer">3:00</div>
         <div class="segment-progress"><div class="segment-progress-fill" id="segmentProgressFill"></div></div>
       </div>
-      <div class="complete-banner" id="completeBanner" style="display:none">Show Complete</div>
-      <div class="complete-sub" id="completeSub" style="display:none">— That's a wrap —</div>
+      <div class="complete-banner" id="completeBanner" style="display:none">Hard Stop</div>
+      <div class="complete-sub" id="completeSub" style="display:none">3:00 PM CST -- Stream ends. No wind-down.</div>
     </div>
 
     <div class="bottom-row">
@@ -752,7 +752,7 @@
 
   <aside class="sidebar">
     <div class="sidebar-head">
-      <div class="sidebar-brand">Makko · Live</div>
+      <div class="sidebar-brand">Make It Live · Ep 002</div>
       <div class="sidebar-title">Run of Show</div>
       <div class="sidebar-sub" id="sidebarSub">15 Segments</div>
     </div>
@@ -794,21 +794,21 @@
 
 <script>
 const SEGMENTS = [
-  { name: "Hook",                     tag: "INTRO",    duration: 3 * 60,  desc: "Tony cold opens -- states Brandon's project, the 3 open loops, and platform logistics" },
-  { name: "A1 — Collections",         tag: "ACT I",    duration: 15 * 60, desc: "Tony explains Collections live -- what it is, why it matters, how context works" },
-  { name: "A2 — Sector Scavengers",   tag: "ACT I",    duration: 12 * 60, desc: "Tony shares his specific wall this week in Sector Scavengers" },
-  { name: "A3 — Project Walkthrough", tag: "ACT I",    duration: 25 * 60, desc: "Brandon opens his project live -- Tony and Brandon decide together what it needs" },
-  { name: "Natural Break",            tag: "INTERVAL", duration: 5 * 60,  desc: "Energy reset -- Dragoon posts giveaway in chat independently" },
-  { name: "B1 — Build",               tag: "ACT II",   duration: 15 * 60, desc: "Brandon starts building based on what was decided in A3" },
-  { name: "Asset Reveal · Clip 1",    tag: "VIDEO",    duration: 3 * 60,  desc: "Kyle pulls up Cesar's pre-generated assets -- Brandon sees them for the first time live" },
-  { name: "B2 — Build Continues",     tag: "ACT II",   duration: 17 * 60, desc: "Brandon integrates assets and keeps building" },
-  { name: "B3 — Progress Check",      tag: "ACT II",   duration: 20 * 60, desc: "How far has Brandon gotten? What is working, what is not?" },
-  { name: "Natural Break",            tag: "INTERVAL", duration: 5 * 60,  desc: "Energy reset -- Dragoon posts second giveaway in chat independently" },
-  { name: "C1 — Reorient",            tag: "ACT III",  duration: 5 * 60,  desc: "Tony states the final objective out loud -- does it work by 3 PM or not?" },
-  { name: "C2 — Final Build",         tag: "ACT III",  duration: 30 * 60, desc: "Last push -- Brandon has 30 minutes to finish or fail live" },
-  { name: "Game Test · Clip 2",       tag: "VIDEO",    duration: 5 * 60,  desc: "Brandon plays what was built -- works or does not, both are valid" },
-  { name: "C3 — Retrospective",       tag: "ACT III",  duration: 10 * 60, desc: "Tony asks 4 questions: what did you set out to build, what got built, what broke, what does that tell us about next week" },
-  { name: "Outro",                    tag: "OUTRO",    duration: 5 * 60,  desc: "Tony delivers CTA -- makko.ai and discord.gg/makko, nothing else" },
+  { name: "Hook",                     tag: "BLOCK 0",        duration: 3 * 60,  desc: "Tony cold opens -- Brandon's project on screen from second one, plants three open loops, platform logistics, AskMakko hashtag, giveaway pointer" },
+  { name: "A1 -- Collections",        tag: "BLOCK A",        duration: 15 * 60, desc: "Tony explains Collections live through Brandon's actual project on screen -- show it, do not describe it. Tony's mandatory line before 18:00" },
+  { name: "A2 -- Sector Scavengers",  tag: "BLOCK A",        duration: 12 * 60, desc: "Tony primary, Brandon silent. One specific wall Tony hit this week in Sector Scavengers -- what it was, what he tried, how it resolved" },
+  { name: "A3 -- Project Walkthrough",tag: "BLOCK A",        duration: 25 * 60, desc: "Brandon primary. Walks his project and delivers three decisions live -- what exists, direction, what specifically happens in Block B" },
+  { name: "Natural Break",            tag: "BREAK",          duration: 5 * 60,  desc: "No formal structure. Tony and Brandon let the energy settle. Dragoon posts giveaway entry instructions in chat" },
+  { name: "B1 -- Build",              tag: "BLOCK B",        duration: 15 * 60, desc: "Brandon states Block B objective to camera in 90 seconds, then builds. Tony quiet unless something notable happens" },
+  { name: "Asset Reveal -- Clip 1",   tag: "BLOCK B · CLIP", duration: 3 * 60,  desc: "Kyle pulls up Cesar's pre-generated assets on stream. Brandon's first reaction live. Tony frames Collections. NOTE VOD TIMESTAMP" },
+  { name: "B2 -- Build Continues",    tag: "BLOCK B",        duration: 17 * 60, desc: "Brandon integrates Cesar's assets and keeps building. Tony narrates one sentence every 5 minutes for late joiners" },
+  { name: "B3 -- Progress Check",     tag: "BLOCK B",        duration: 20 * 60, desc: "Brandon's 3-minute honest check -- what is working, what is not, what he still needs. Tony plants the Block C loop" },
+  { name: "Natural Break",            tag: "BREAK",          duration: 5 * 60,  desc: "Natural breath between Block B and Block C. Dragoon posts giveaway reminder in chat" },
+  { name: "C1 -- Reorient",           tag: "BLOCK C",        duration: 5 * 60,  desc: "Tony 90-second reorient for late joiners -- two hours in, this is the final hour, does it work by 3 PM CST or not?" },
+  { name: "C2 -- Final Build",        tag: "BLOCK C",        duration: 30 * 60, desc: "Last push. Brandon finishes the build. Tony quiet, deep work. Kyle passes a chat question to Tony when a good one comes in" },
+  { name: "Game Test -- Clip 2",      tag: "BLOCK C · CLIP", duration: 5 * 60,  desc: "Brandon hits play. Whatever happens, happens. Tony reacts genuinely. NOTE VOD TIMESTAMP" },
+  { name: "C3 -- Retrospective",      tag: "BLOCK C",        duration: 10 * 60, desc: "Tony asks four questions in order: what you set out to build, what got built, what broke, what that tells us about next week" },
+  { name: "Outro",                    tag: "OUTRO",          duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases the unresolved thread for next week. Hard stop at 3:00 PM CST" },
 ];
 
 const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
@@ -820,8 +820,8 @@ const OFFSETS = (() => {
   return arr;
 })();
 
-// Hardcoded show start: May 27, 2026 at 1:00 PM PDT (UTC-7) = 20:00 UTC
-const DEFAULT_START = Date.UTC(2026, 4, 27, 20, 0, 0);
+// Hardcoded show start: May 27, 2026 at 1:00 PM CDT (UTC-5) = 18:00 UTC
+const DEFAULT_START = Date.UTC(2026, 4, 27, 18, 0, 0);
 
 // State
 let scheduledStart = DEFAULT_START; // unix ms
