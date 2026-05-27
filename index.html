@@ -820,9 +820,12 @@ const OFFSETS = (() => {
   return arr;
 })();
 
+// Hardcoded show start: May 27, 2026 at 1:00 PM PDT (UTC-7) = 20:00 UTC
+const DEFAULT_START = Date.UTC(2026, 4, 27, 20, 0, 0);
+
 // State
-let scheduledStart = null; // unix ms, or null
-let manualMode = false;    // if true, ignore scheduled start (user took manual control)
+let scheduledStart = DEFAULT_START; // unix ms
+let manualMode = false;             // if true, ignore scheduled start (user took manual control)
 let currentIndex = 0;
 let remaining = SEGMENTS[0].duration;
 let playing = false;
@@ -1186,15 +1189,15 @@ function buildShareUrl(ts) {
   return base + '#start=' + ts;
 }
 
-function applySchedule(ts) {
+function applySchedule(ts, updateUrl) {
   scheduledStart = ts;
   manualMode = false;
   syncFromSchedule();
   startScheduledLoop();
   render();
-  // Update URL
-  const url = '#start=' + ts;
-  history.replaceState(null, '', url);
+  if (updateUrl) {
+    history.replaceState(null, '', '#start=' + ts);
+  }
 }
 
 function clearSchedule() {
@@ -1248,7 +1251,7 @@ $btnSetSchedule.addEventListener('click', () => {
   if (!v) return;
   const ts = Date.parse(v);
   if (isNaN(ts)) return;
-  applySchedule(ts);
+  applySchedule(ts, true);
   $modalShare.classList.add('visible');
   $shareUrl.value = buildShareUrl(ts);
 });
@@ -1285,13 +1288,9 @@ document.addEventListener('keydown', (e) => {
   document.getElementById('sidebarSub').textContent = '15 Segments · ' + h + 'h ' + String(m).padStart(2, '0') + 'm';
 })();
 
-// Init from URL
+// Init: URL hash overrides; otherwise use hardcoded DEFAULT_START
 const urlStart = readHashSchedule();
-if (urlStart) {
-  applySchedule(urlStart);
-} else {
-  render();
-}
+applySchedule(urlStart || DEFAULT_START);
 </script>
 </body>
 </html>
