@@ -794,21 +794,21 @@
 
 <script>
 const SEGMENTS = [
-  { name: "Hook",                     tag: "BLOCK 0",        duration: 3 * 60,  desc: "Jeremy cold opens -- Brandon's project on screen from second one, plants three open loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
-  { name: "A1 -- Collections",        tag: "BLOCK A",        duration: 15 * 60, desc: "Jeremy drives the Collections explanation through Brandon's project on screen. Tony translates for the non-technical viewer. Show it, do not describe it" },
-  { name: "A2 -- Jeremy",             tag: "BLOCK A",        duration: 12 * 60, desc: "Jeremy primary. One specific technical insight or problem from Makko or the RiftRunner project this week. Tony follows and translates. Brandon present" },
-  { name: "A3 -- Project Walkthrough",tag: "BLOCK A",        duration: 25 * 60, desc: "Brandon primary. Walks the project and delivers three decisions live -- what exists, direction, what specifically happens in Block B. Jeremy probes technically" },
-  { name: "Natural Break",            tag: "BREAK",          duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
-  { name: "B1 -- Build",              tag: "BLOCK B",        duration: 15 * 60, desc: "Brandon states his Block B objective to camera in 90 seconds, then builds. Jeremy leads world-building or game design discussion during AI generation waits" },
-  { name: "Asset Reveal -- Clip 1",   tag: "BLOCK B · CLIP", duration: 3 * 60,  desc: "Kyle pulls up Cesar's pre-generated assets on stream. Brandon's first reaction live. Jeremy frames Collections and adds the technical commentary. NOTE VOD TIMESTAMP" },
-  { name: "B2 -- Build Continues",    tag: "BLOCK B",        duration: 17 * 60, desc: "Brandon integrates Cesar's assets and keeps building. Jeremy or Tony narrates one sentence every 5 minutes for late joiners" },
-  { name: "B3 -- Progress Check",     tag: "BLOCK B",        duration: 20 * 60, desc: "Brandon's 3-minute honest check -- what is working, what is not, what he still needs. Jeremy plants the Block C loop" },
-  { name: "Natural Break",            tag: "BREAK",          duration: 5 * 60,  desc: "Natural breath between Block B and Block C. Zac posts giveaway reminder in chat" },
-  { name: "C1 -- Reorient",           tag: "BLOCK C",        duration: 5 * 60,  desc: "Jeremy 90-second reorient for late joiners -- two hours in, this is the final hour, does it work by 3 PM or not?" },
-  { name: "C2 -- Final Build",        tag: "BLOCK C",        duration: 30 * 60, desc: "Last push. Brandon finishes the build. Jeremy and Tony quiet, deep work. Jeremy leads world-building during generation waits" },
-  { name: "Game Test -- Clip 2",      tag: "BLOCK C · CLIP", duration: 5 * 60,  desc: "Brandon hits play. Whatever happens, happens. Jeremy gives a one-sentence technical read on what the result means. NOTE VOD TIMESTAMP" },
-  { name: "C3 -- Retrospective",      tag: "BLOCK C",        duration: 10 * 60, desc: "Jeremy asks four questions in order: what you set out to build, what got built, what broke, what that tells us about next week" },
-  { name: "Outro",                    tag: "OUTRO",          duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases the unresolved thread for next week. Hard stop at 3:00 PM" },
+  { name: "Hook",                       tag: "BLOCK 0",        duration: 3 * 60,  desc: "Jeremy cold opens -- Brandon's Rift Runners on screen from second one, plants three open loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
+  { name: "A1 -- Collections + Godot",  tag: "BLOCK A",        duration: 15 * 60, desc: "Jeremy drives the Collections explanation through Brandon's Rift Runners on screen -- built in Godot. Tony translates for the non-technical viewer. Targets the Godot audience directly" },
+  { name: "A2 -- Jeremy + SS Check-in", tag: "BLOCK A",        duration: 12 * 60, desc: "Jeremy primary. Technical insight on Rift Runners in Godot -- Collections + Godot pipeline. Tony checks in on Sector Scavengers art consistency from last episode (closing last week's loop)" },
+  { name: "A3 -- Project Walkthrough",  tag: "BLOCK A",        duration: 25 * 60, desc: "Brandon primary. Walks Rift Runners and delivers three decisions live -- what exists, direction, what specifically happens in Block B. Jeremy probes technically" },
+  { name: "Natural Break",              tag: "BREAK",          duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
+  { name: "B1 -- Build",                tag: "BLOCK B",        duration: 15 * 60, desc: "Brandon states his Block B objective for Rift Runners to camera in 90 seconds, then builds. Jeremy leads world-building or Godot-flavored game design discussion during AI generation waits" },
+  { name: "Asset Reveal -- Clip 1",     tag: "BLOCK B · CLIP", duration: 3 * 60,  desc: "Kyle pulls up Cesar's pre-generated assets on stream. Brandon's first reaction live. Jeremy frames Collections and adds the technical commentary. NOTE VOD TIMESTAMP" },
+  { name: "B2 -- Build Continues",      tag: "BLOCK B",        duration: 17 * 60, desc: "Brandon integrates Cesar's assets into Rift Runners and keeps building. Jeremy or Tony narrates one sentence every 5 minutes for late joiners" },
+  { name: "B3 -- Progress Check",       tag: "BLOCK B",        duration: 20 * 60, desc: "Brandon's 3-minute honest check on Rift Runners -- what is working, what is not, what he still needs. Jeremy plants the Block C loop" },
+  { name: "Natural Break",              tag: "BREAK",          duration: 5 * 60,  desc: "Natural breath between Block B and Block C. Zac posts giveaway reminder in chat" },
+  { name: "C1 -- Reorient",             tag: "BLOCK C",        duration: 5 * 60,  desc: "Jeremy 90-second reorient for late joiners -- two hours into Rift Runners, this is the final hour, does it work by 3 PM or not?" },
+  { name: "C2 -- Final Build",          tag: "BLOCK C",        duration: 30 * 60, desc: "Last push. Brandon finishes the Rift Runners build. Jeremy and Tony quiet, deep work. Jeremy leads world-building during generation waits" },
+  { name: "Game Test -- Clip 2",        tag: "BLOCK C · CLIP", duration: 5 * 60,  desc: "Brandon hits play on Rift Runners. Whatever happens, happens. Jeremy gives a one-sentence technical read on what the result means. NOTE VOD TIMESTAMP" },
+  { name: "C3 -- Retrospective",        tag: "BLOCK C",        duration: 10 * 60, desc: "Jeremy asks four questions in order: what you set out to build, what got built, what broke, what that tells us about next week" },
+  { name: "Outro",                      tag: "OUTRO",          duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases the unresolved Rift Runners thread for next week. Hard stop at 3:00 PM" },
 ];
 
 const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
