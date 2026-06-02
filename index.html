@@ -706,7 +706,7 @@
         <div class="meta">Elapsed <strong id="elapsed">00:00:00</strong></div>
       </div>
       <div class="status-right">
-        <div class="seg-counter"><strong id="segCurrent">01</strong> <span style="opacity:.5">/ 15</span></div>
+        <div class="seg-counter"><strong id="segCurrent">01</strong> <span style="opacity:.5">/ <span id="segTotal">15</span></span></div>
         <div class="sync-controls">
           <button class="sync-btn" id="btnSchedule">Schedule</button>
           <button class="sync-btn" id="btnShare">Share</button>
@@ -796,7 +796,8 @@
 const SEGMENTS = [
   { name: "Hook",                       tag: "BLOCK 0",        duration: 3 * 60,  desc: "Jeremy cold opens -- Brandon's Rift Runners on screen from second one, plants three open loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
   { name: "A1 -- Collections + Godot",  tag: "BLOCK A",        duration: 15 * 60, desc: "Jeremy drives the Collections explanation through Brandon's Rift Runners on screen -- built in Godot. Tony translates for the non-technical viewer. Targets the Godot audience directly" },
-  { name: "A2 -- Jeremy + SS Check-in", tag: "BLOCK A",        duration: 12 * 60, desc: "Jeremy primary. Technical insight on Rift Runners in Godot -- Collections + Godot pipeline. Tony checks in on Sector Scavengers art consistency from last episode (closing last week's loop)" },
+  { name: "A2 -- Jeremy Technical",     tag: "BLOCK A",        duration: 7 * 60,  desc: "Jeremy primary, Tony translating. One specific technical insight on Rift Runners in Godot -- Collections + Godot pipeline. Closes Loop 3 from the hook" },
+  { name: "SS Check-in",                tag: "BLOCK A · CALLBACK", duration: 5 * 60, desc: "Tony primary. Quick callback to Sector Scavengers art consistency from last episode -- what landed, what is still rough. Closes last week's open thread before handing to Brandon" },
   { name: "A3 -- Project Walkthrough",  tag: "BLOCK A",        duration: 25 * 60, desc: "Brandon primary. Walks Rift Runners and delivers three decisions live -- what exists, direction, what specifically happens in Block B. Jeremy probes technically" },
   { name: "Natural Break",              tag: "BREAK",          duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
   { name: "B1 -- Build",                tag: "BLOCK B",        duration: 15 * 60, desc: "Brandon states his Block B objective for Rift Runners to camera in 90 seconds, then builds. Jeremy leads world-building or Godot-flavored game design discussion during AI generation waits" },
@@ -940,7 +941,7 @@ function render() {
     $completeBanner.style.display = '';
     $completeSub.style.display = '';
     $total.textContent = '0:00';
-    $segCurrent.textContent = '15';
+    $segCurrent.textContent = String(SEGMENTS.length).padStart(2, '0');
     $btnPlay.firstChild.textContent = 'Play ';
     $onAir.classList.remove('live');
     $onAir.classList.remove('scheduled');
@@ -1281,11 +1282,12 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === 'Escape') { closeModal(); }
 });
 
-// Header total
+// Header total (dynamic based on SEGMENTS array)
 (function setHeaderTotal() {
   const h = Math.floor(TOTAL_DURATION / 3600);
   const m = Math.floor((TOTAL_DURATION % 3600) / 60);
-  document.getElementById('sidebarSub').textContent = '15 Segments · ' + h + 'h ' + String(m).padStart(2, '0') + 'm';
+  document.getElementById('sidebarSub').textContent = SEGMENTS.length + ' Segments · ' + h + 'h ' + String(m).padStart(2, '0') + 'm';
+  document.getElementById('segTotal').textContent = SEGMENTS.length;
 })();
 
 // Init: URL hash overrides; otherwise use hardcoded DEFAULT_START
