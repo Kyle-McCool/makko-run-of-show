@@ -727,7 +727,7 @@
         <div class="segment-progress"><div class="segment-progress-fill" id="segmentProgressFill"></div></div>
       </div>
       <div class="complete-banner" id="completeBanner" style="display:none">Hard Stop</div>
-      <div class="complete-sub" id="completeSub" style="display:none">9:00 AM PT -- Stream ends. No wind-down.</div>
+      <div class="complete-sub" id="completeSub" style="display:none">10:00 AM PT -- Stream ends. No wind-down.</div>
     </div>
 
     <div class="bottom-row">
@@ -794,19 +794,22 @@
 
 <script>
 const SEGMENTS = [
-  { name: "Hook",                              tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the art scope contract: where Rift Runners' art collection is right now, where it gets to by 9am, what we are NOT touching. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
-  { name: "Sector Scavengers Showcase",        tag: "BLOCK A · FEATURE", duration: 15 * 60, desc: "Tony primary. Full walkthrough of his Sector Scavengers art this week -- what he is making, the consistency wins, the rough edges. Show it on screen, give it real time to land" },
-  { name: "Jeremy's Collections Breakdown",    tag: "BLOCK A",           duration: 10 * 60, desc: "Jeremy explains Collections live by breaking down a customer email -- their sent-in sketch and how Collections turns it into consistent art. Tony translates for the non-technical viewer" },
-  { name: "Rift Runners Art: Where It Stands", tag: "BLOCK A · START",   duration: 12 * 60, desc: "Brandon primary. The START STATE on screen -- what art exists in the Rift Runners collection today, what is missing, what gets generated this morning. Jeremy probes the style choices" },
-  { name: "Natural Break",                     tag: "BREAK",             duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
-  { name: "Art Build: Set the Style",          tag: "BLOCK B",           duration: 15 * 60, desc: "Brandon sets the Collection style and generates the first missing pieces live in Makko. Jeremy narrates the art direction for late joiners. Concept art first -- everything inherits from it" },
-  { name: "Art Build: Characters & Enemies",   tag: "BLOCK B",           duration: 15 * 60, desc: "Brandon builds out the character and enemy art in the same Collection. Jeremy and Tony talk world-building -- who are these characters, what is the game about -- while generation runs" },
-  { name: "Progress Check",                    tag: "BLOCK B",           duration: 7 * 60,  desc: "Brandon's honest check -- what is consistent, what needs another pass, what is still missing from the target collection. Jeremy plants the final-pass loop" },
-  { name: "Natural Break",                     tag: "BREAK",             duration: 5 * 60,  desc: "Natural breath before the final push. Zac posts giveaway reminder in chat" },
-  { name: "Art Build: Final Pass",             tag: "BLOCK C",           duration: 13 * 60, desc: "Last push. Brandon completes the defined art slice -- backgrounds, props, or whatever finishes the END STATE. Jeremy keeps the world-building going during generation waits" },
-  { name: "Consistency Test -- Priority Clip", tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Line up everything made this morning against the existing collection. Does the style hold across every new piece? Jeremy gives the read -- this is the Collections proof moment. NOTE VOD TIMESTAMP" },
-  { name: "Retrospective",                     tag: "BLOCK C",           duration: 10 * 60, desc: "Jeremy asks four questions in order: what art did you set out to make, what got made, what missed the style, what does that tell us about next week. Tease: this is the art Godot gets next" },
-  { name: "Outro",                             tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the Rift Runners art goes into Godot. Hard stop at 9:00 AM PT" },
+  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the art scope contract: where Rift Runners' art collection is right now, where it gets to by 10am, what we are NOT touching. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
+  { name: "Sector Scavengers Showcase",          tag: "BLOCK A · FEATURE", duration: 20 * 60, desc: "Tony primary. Full walkthrough of his Sector Scavengers art this week -- what he is making, the consistency wins, the rough edges. Show it on screen, give it real time to land" },
+  { name: "Jeremy's Collections Breakdown",      tag: "BLOCK A",           duration: 15 * 60, desc: "Jeremy explains Collections live by breaking down a customer email -- their sent-in sketch and how Collections turns it into consistent art. Tony translates for the non-technical viewer" },
+  { name: "Rift Runners Art: Where It Stands",   tag: "BLOCK A · START",   duration: 15 * 60, desc: "Brandon primary. The START STATE on screen -- what art exists in the Rift Runners collection today, what is missing, what gets generated this morning. Jeremy probes the style choices" },
+  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
+  { name: "Phase 1 -- Concept + Style",          tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon sets the Collection style and generates the foundation concept art live in Makko. Everything inherits from this. Jeremy narrates the art direction for late joiners" },
+  { name: "Phase 1 -- Main Characters",          tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon builds out the main character art in the same Collection. Jeremy and Tony talk world-building -- who are these characters, what is the game about -- while generation runs" },
+  { name: "Progress Check 1",                    tag: "BLOCK B",           duration: 8 * 60,  desc: "Brandon's honest check -- does the concept art and character set hold the style? What needs another pass before moving on. Jeremy plants the Phase 2 loop" },
+  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Natural breath between phases. Zac posts giveaway reminder in chat" },
+  { name: "Phase 2 -- Enemies & Hazards",        tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon generates the enemy and hazard art in the Collection. Jeremy leads game design discussion -- how these threats shape the game -- during generation waits. Narrate for late joiners every 5 min" },
+  { name: "Phase 2 -- Environments & Biomes",    tag: "BLOCK B · BUILD",   duration: 12 * 60, desc: "Brandon builds the backgrounds and biome art. Jeremy ties the environments back to the world-building established earlier. Watch the style stay consistent across very different art needs" },
+  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Breath before the final push. Zac posts last giveaway reminder, winner drawn after the show" },
+  { name: "Phase 3 -- Props & Final Pass",       tag: "BLOCK C · BUILD",   duration: 12 * 60, desc: "Last push. Brandon completes the defined slice -- props, objects, whatever finishes the END STATE collection. Jeremy keeps the world-building going during generation waits" },
+  { name: "Consistency Test -- Priority Clip",   tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Line up everything made this morning against the existing collection. Does the style hold across concept, characters, enemies, environments, and props? Jeremy gives the read -- the Collections proof moment. NOTE VOD TIMESTAMP" },
+  { name: "Retrospective",                       tag: "BLOCK C",           duration: 10 * 60, desc: "Jeremy asks four questions in order: what art did you set out to make, what got made, what missed the style, what does that tell us about next week. Tease: this is the art Godot gets next" },
+  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the Rift Runners art goes into Godot. Hard stop at 10:00 AM PT" },
 ];
 
 const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
