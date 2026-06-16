@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAKE IT LIVE -- Ep 005 -- Run of Show</title>
+<title>MAKE IT LIVE -- Ep 006 -- Run of Show</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -727,7 +727,7 @@
         <div class="segment-progress"><div class="segment-progress-fill" id="segmentProgressFill"></div></div>
       </div>
       <div class="complete-banner" id="completeBanner" style="display:none">Hard Stop</div>
-      <div class="complete-sub" id="completeSub" style="display:none">10:00 AM PT -- Stream ends. No wind-down.</div>
+      <div class="complete-sub" id="completeSub" style="display:none">4:00 PM PT -- Stream ends. No wind-down.</div>
     </div>
 
     <div class="bottom-row">
@@ -752,7 +752,7 @@
 
   <aside class="sidebar">
     <div class="sidebar-head">
-      <div class="sidebar-brand">Make It Live · Ep 005</div>
+      <div class="sidebar-brand">Make It Live · Ep 006</div>
       <div class="sidebar-title">Run of Show</div>
       <div class="sidebar-sub" id="sidebarSub">15 Segments</div>
     </div>
@@ -794,22 +794,23 @@
 
 <script>
 const SEGMENTS = [
-  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the art scope contract: where Rift Runners' art collection is right now, where it gets to by 10am, what we are NOT touching. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
-  { name: "Sector Scavengers Showcase",          tag: "BLOCK A · FEATURE", duration: 20 * 60, desc: "Tony primary. Full walkthrough of his Sector Scavengers art this week -- what he is making, the consistency wins, the rough edges. Show it on screen, give it real time to land" },
-  { name: "Collections: Right Way vs Wrong Way", tag: "BLOCK A",           duration: 15 * 60, desc: "Jeremy teaches Collections by showing both sides live -- generate with no Collection reference selected (inconsistent, off-style) next to the same prompt with the reference on (matches every time). Names the one mistake that breaks consistency. Tony translates for the non-technical viewer" },
-  { name: "Rift Runners Art: Where It Stands",   tag: "BLOCK A · START",   duration: 15 * 60, desc: "Brandon primary. The START STATE on screen -- what art exists in the Rift Runners collection today, what is missing, what gets generated this morning. Jeremy probes the style choices" },
+  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the Godot scope contract: where Rift Runners is in the engine right now, the one slice it reaches by 4pm, what we are NOT building today. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
+  { name: "Recap -- The Art We Made",            tag: "BLOCK A · RECAP",   duration: 12 * 60, desc: "Tony and Brandon. Quick recap of last week's art collection -- the concept, characters, enemies, environments, props that are about to go into Godot. Bridges the episodes for returning and new viewers" },
+  { name: "Godot 101 for the Audience",          tag: "BLOCK A",           duration: 15 * 60, desc: "Jeremy primary. Quick Godot primer -- what it is, why Rift Runners is built in it, how Makko art drops into an engine. Targets the Godot audience directly. Tony asks the newcomer questions" },
+  { name: "Rift Runners in Godot: Where It Stands", tag: "BLOCK A · START", duration: 15 * 60, desc: "Brandon primary. The START STATE on screen -- the current Godot project, what already works, and the exact slice we are building today. Jeremy probes the technical setup. Locks the scope before the build" },
   { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
-  { name: "Phase 1 -- Concept + Style",          tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon sets the Collection style and generates the foundation concept art live in Makko. Everything inherits from this. Jeremy narrates the art direction for late joiners" },
-  { name: "Phase 1 -- Main Characters",          tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon builds out the main character art in the same Collection. Jeremy and Tony talk world-building -- who are these characters, what is the game about -- while generation runs" },
-  { name: "Progress Check 1",                    tag: "BLOCK B",           duration: 8 * 60,  desc: "Brandon's honest check -- does the concept art and character set hold the style? What needs another pass before moving on. Jeremy plants the Phase 2 loop" },
-  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Natural breath between phases. Zac posts giveaway reminder in chat" },
-  { name: "Phase 2 -- Enemies & Hazards",        tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon generates the enemy and hazard art in the Collection. Jeremy leads game design discussion -- how these threats shape the game -- during generation waits. Narrate for late joiners every 5 min" },
-  { name: "Phase 2 -- Environments & Biomes",    tag: "BLOCK B · BUILD",   duration: 12 * 60, desc: "Brandon builds the backgrounds and biome art. Jeremy ties the environments back to the world-building established earlier. Watch the style stay consistent across very different art needs" },
+  { name: "Build 1 -- Art Into Engine",          tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon imports last week's Makko art into Godot -- sprites, scenes, the character set up in the project. Jeremy narrates the import pipeline for the Godot audience and late joiners" },
+  { name: "Art In-Engine First Look -- Clip 1",  tag: "BLOCK B · CLIP",    duration: 5 * 60,  desc: "First time the new Rift Runners art renders and moves inside Godot. Genuine reaction. Jeremy gives the technical read on the Makko-to-Godot pipeline -- product proof moment. NOTE VOD TIMESTAMP" },
+  { name: "Build 2 -- Core Mechanic",            tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon codes the defining Rift Runners mechanic in Godot. Jeremy leads game design discussion -- how the mechanic shapes the game -- during longer code stretches. Narrate for late joiners every 5 min" },
+  { name: "Progress Check 1",                    tag: "BLOCK B",           duration: 8 * 60,  desc: "Brandon's honest check -- does the mechanic work, what is rough, what is left for the slice. Jeremy plants the integration loop. Tony translates the technical state for the general viewer" },
+  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Natural breath mid-build. Zac posts giveaway reminder in chat" },
+  { name: "Build 3 -- Art Meets Mechanic",       tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon hooks the art to the mechanic -- animations fire, the character actually does the thing on screen. The slice starts to feel like a game. Jeremy narrates the wiring" },
+  { name: "Build 4 -- Juice & Feel",             tag: "BLOCK C · BUILD",   duration: 15 * 60, desc: "Brandon adds the feel -- hit feedback, particles, screen shake, sound on the mechanic. Jeremy explains why juice is what separates a demo from a game. This is where the slice comes alive" },
   { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Breath before the final push. Zac posts last giveaway reminder, winner drawn after the show" },
-  { name: "Phase 3 -- Props & Final Pass",       tag: "BLOCK C · BUILD",   duration: 12 * 60, desc: "Last push. Brandon completes the defined slice -- props, objects, whatever finishes the END STATE collection. Jeremy keeps the world-building going during generation waits" },
-  { name: "Consistency Test -- Priority Clip",   tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Line up everything made this morning against the existing collection. Does the style hold across concept, characters, enemies, environments, and props? Jeremy gives the read -- the Collections proof moment. NOTE VOD TIMESTAMP" },
-  { name: "Retrospective",                       tag: "BLOCK C",           duration: 10 * 60, desc: "Jeremy asks four questions in order: what art did you set out to make, what got made, what missed the style, what does that tell us about next week. Tease: this is the art Godot gets next" },
-  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the Rift Runners art goes into Godot. Hard stop at 10:00 AM PT" },
+  { name: "Build 5 -- Final Integration",        tag: "BLOCK C · BUILD",   duration: 12 * 60, desc: "Last push. Brandon ties the slice together to hit the END STATE -- one mechanic, real art, real feel, playable. Jeremy keeps the technical narration going. Code Studio errors named plainly, no apology" },
+  { name: "Live Game Test -- Clip 2",            tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Brandon hits play. The slice works or it does not, both are real. Jeremy and Tony react genuinely. Jeremy gives a one-sentence technical read on the result. NOTE VOD TIMESTAMP" },
+  { name: "Retrospective",                       tag: "BLOCK C",           duration: 10 * 60, desc: "Jeremy asks four questions in order: what did you set out to build, what got built, what broke and why, what does that tell us about next week. Tease the next slice" },
+  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the unresolved Rift Runners thread. Hard stop at 4:00 PM PT" },
 ];
 
 const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
@@ -821,8 +822,8 @@ const OFFSETS = (() => {
   return arr;
 })();
 
-// Hardcoded show start: June 10, 2026 at 7:00 AM PDT (UTC-7) = 14:00 UTC
-const DEFAULT_START = Date.UTC(2026, 5, 10, 14, 0, 0);
+// Hardcoded show start: June 17, 2026 at 1:00 PM PDT (UTC-7) = 20:00 UTC
+const DEFAULT_START = Date.UTC(2026, 5, 17, 20, 0, 0);
 
 // State
 let scheduledStart = DEFAULT_START; // unix ms
