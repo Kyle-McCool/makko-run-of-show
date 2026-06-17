@@ -727,7 +727,7 @@
         <div class="segment-progress"><div class="segment-progress-fill" id="segmentProgressFill"></div></div>
       </div>
       <div class="complete-banner" id="completeBanner" style="display:none">Hard Stop</div>
-      <div class="complete-sub" id="completeSub" style="display:none">4:00 PM PT -- Stream ends. No wind-down.</div>
+      <div class="complete-sub" id="completeSub" style="display:none">11:00 AM PT -- Stream ends. No wind-down.</div>
     </div>
 
     <div class="bottom-row">
@@ -794,7 +794,7 @@
 
 <script>
 const SEGMENTS = [
-  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the Godot scope contract: where Rift Runners is in the engine right now, the one slice it reaches by 4pm, what we are NOT building today. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
+  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the Godot scope contract: where Rift Runners is in the engine right now, the one slice it reaches by 11am, what we are NOT building today. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
   { name: "Sector Scavengers Update",            tag: "BLOCK A · FEATURE", duration: 12 * 60, desc: "Tony primary. No material art changes this week -- this is a gameplay update. Tony walks the new extraction rules (when the player is allowed to extract from the ship) and shows off a video a community member made. Jeremy adds commentary" },
   { name: "Letta's Game -- Creator Spotlight",   tag: "BLOCK A · FEATURE", duration: 12 * 60, desc: "Tony introduces Letta, the paid Makko creator who builds games on Makko and makes YouTube videos about it. Watch his latest video and talk through it -- no live play. Jeremy and Tony react and pull out what is interesting. Closes the community block before the show turns to Rift Runners" },
   { name: "Recap -- The Art We Made",            tag: "BLOCK A · RECAP",   duration: 6 * 60,  desc: "Tony and Brandon. Tight recap of last week's Rift Runners art collection -- the concept, characters, enemies, environments, props that are about to go into Godot. Bridges the episodes for returning and new viewers" },
@@ -811,7 +811,7 @@ const SEGMENTS = [
   { name: "Build 5 -- Final Integration",        tag: "BLOCK C · BUILD",   duration: 12 * 60, desc: "Last push. Brandon ties the slice together to hit the END STATE -- one mechanic, real art, real feel, playable. Jeremy keeps the technical narration going. Code Studio errors named plainly, no apology" },
   { name: "Live Game Test -- Clip 2",            tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Brandon hits play. The slice works or it does not, both are real. Jeremy and Tony react genuinely. Jeremy gives a one-sentence technical read on the result. NOTE VOD TIMESTAMP" },
   { name: "Retrospective",                       tag: "BLOCK C",           duration: 10 * 60, desc: "Jeremy asks four questions in order: what did you set out to build, what got built, what broke and why, what does that tell us about next week. Tease the next slice" },
-  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the unresolved Rift Runners thread, and FX + juice getting their own full show. Hard stop at 4:00 PM PT" },
+  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the unresolved Rift Runners thread, and FX + juice getting their own full show. Hard stop at 11:00 AM PT" },
 ];
 
 const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
@@ -823,8 +823,8 @@ const OFFSETS = (() => {
   return arr;
 })();
 
-// Hardcoded show start: June 17, 2026 at 1:00 PM PDT (UTC-7) = 20:00 UTC
-const DEFAULT_START = Date.UTC(2026, 5, 17, 20, 0, 0);
+// Hardcoded show start: June 17, 2026 at 8:00 AM PDT (UTC-7) = 15:00 UTC
+const DEFAULT_START = Date.UTC(2026, 5, 17, 15, 0, 0);
 
 // State
 let scheduledStart = DEFAULT_START; // unix ms
