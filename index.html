@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAKE IT LIVE -- Ep 006 -- Run of Show</title>
+<title>MAKE IT LIVE -- Ep 007 -- Run of Show</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -422,17 +422,75 @@
   .sidebar-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 
   .seg {
-    padding: 18px 32px;
+    padding: 16px 32px;
+    border-left: 2px solid transparent;
+    position: relative;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .seg-top {
     display: grid;
     grid-template-columns: 44px 1fr auto;
     gap: 16px;
     align-items: baseline;
     cursor: pointer;
-    border-left: 2px solid transparent;
-    position: relative;
-    transition: all 0.2s ease;
   }
   .seg:hover { background: rgba(255,255,255,0.02); }
+  .seg-notes {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 10px;
+    padding-left: 60px;
+  }
+  .seg-note-input {
+    flex: 1;
+    background: var(--bg-deep);
+    border: 1px solid var(--line-soft);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.45;
+    padding: 7px 9px;
+    border-radius: 3px;
+    resize: vertical;
+    outline: none;
+    min-height: 34px;
+  }
+  .seg-note-input:focus { border-color: var(--accent); }
+  .seg-note-input::placeholder { color: var(--text-mute); }
+  .note-stamp {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-mute);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    min-width: auto;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .note-stamp:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+  .notes-export {
+    margin-top: 14px;
+    width: 100%;
+    min-width: auto;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 9px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .notes-export:hover { border-color: var(--accent); color: var(--accent); }
   .seg-num {
     font-family: 'Instrument Serif', serif;
     font-size: 28px;
@@ -752,9 +810,10 @@
 
   <aside class="sidebar">
     <div class="sidebar-head">
-      <div class="sidebar-brand">Make It Live · Ep 006</div>
+      <div class="sidebar-brand">Make It Live · Ep 007</div>
       <div class="sidebar-title">Run of Show</div>
       <div class="sidebar-sub" id="sidebarSub">15 Segments</div>
+      <button class="notes-export" id="btnCopyNotes">Copy all notes</button>
     </div>
     <div class="sidebar-list" id="sidebar"></div>
   </aside>
@@ -794,24 +853,23 @@
 
 <script>
 const SEGMENTS = [
-  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the Godot scope contract: where Rift Runners is in the engine right now, the one slice it reaches by 11:30am, what we are NOT building today. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
-  { name: "Sector Scavengers Update",            tag: "BLOCK A · FEATURE", duration: 12 * 60, desc: "Tony primary. No material art changes this week -- this is a gameplay update. Tony walks the new extraction rules (when the player is allowed to extract from the ship) and shows off a video a community member made. Jeremy adds commentary" },
-  { name: "Letta's Game -- Creator Spotlight",   tag: "BLOCK A · FEATURE", duration: 12 * 60, desc: "Tony introduces Letta, the paid Makko creator who builds games on Makko and makes YouTube videos about it. Watch his latest video and talk through it -- no live play. Jeremy and Tony react and pull out what is interesting. Closes the community block before the show turns to Rift Runners" },
-  { name: "Recap -- The Art We Made",            tag: "BLOCK A · RECAP",   duration: 6 * 60,  desc: "Tony and Brandon. Tight recap of last week's Rift Runners art collection -- the concept, characters, enemies, environments, props that are about to go into Godot. Bridges the episodes for returning and new viewers" },
-  { name: "Godot 101 for the Audience",          tag: "BLOCK A",           duration: 10 * 60, desc: "Jeremy primary. Quick Godot primer -- what it is, why Rift Runners is built in it, how Makko art drops into an engine. Targets the Godot audience directly. Tony asks the newcomer questions" },
-  { name: "Rift Runners in Godot: Where It Stands", tag: "BLOCK A · START", duration: 15 * 60, desc: "Brandon primary. The START STATE on screen -- the current Godot project, what already works, and the exact slice we are building today. Jeremy probes the technical setup. Locks the scope before the build" },
+  { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Jeremy cold opens -- states the scope contract: where the Rift Runners slice landed last week, the one thing it gains by 11:30am, what we are NOT building today. Plants three loops. Tony delivers logistics, AskMakko hashtag, giveaway pointer" },
+  { name: "Sector Scavengers Update",            tag: "BLOCK A · FEATURE", duration: 12 * 60, desc: "Tony primary. The recurring feature -- what changed in Sector Scavengers this week, gameplay or art, plus any community video worth showing. Jeremy adds commentary. Keep it to time" },
+  { name: "Recap -- Where We Left Off",          tag: "BLOCK A · RECAP",   duration: 8 * 60,  desc: "Jeremy and Brandon. Tight recap of last week's Rift Runners slice -- the mechanic and playable space that got built in Godot. Bridges the episodes for returning and new viewers" },
+  { name: "This Week's Slice: Where It Stands",  tag: "BLOCK A · START",   duration: 12 * 60, desc: "Brandon primary. The START STATE on screen -- the current Godot project after last week, and the exact addition we are building today. Jeremy probes the technical setup. Locks the scope before the build" },
   { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
-  { name: "Build 1 -- Art Into Engine",          tag: "BLOCK B · BUILD",   duration: 18 * 60, desc: "Brandon imports last week's Makko art into Godot -- sprites, scenes, the character set up in the project. Jeremy narrates the import pipeline for the Godot audience and late joiners" },
-  { name: "Art In-Engine First Look -- Clip 1",  tag: "BLOCK B · CLIP",    duration: 5 * 60,  desc: "First time the new Rift Runners art renders and moves inside Godot. Genuine reaction. Jeremy gives the technical read on the Makko-to-Godot pipeline -- product proof moment. NOTE VOD TIMESTAMP" },
-  { name: "Build 2 -- Core Mechanic",            tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon codes the defining Rift Runners mechanic in Godot. Jeremy leads game design discussion -- how the mechanic shapes the game -- during longer code stretches. Narrate for late joiners every 5 min" },
-  { name: "Progress Check 1",                    tag: "BLOCK B",           duration: 7 * 60,  desc: "Brandon's honest check -- does the mechanic work, what is rough, what is left for the slice. Jeremy plants the integration loop. Tony translates the technical state for the general viewer" },
-  { name: "Build 3 -- Art Meets Mechanic",       tag: "BLOCK B · BUILD",   duration: 18 * 60, desc: "Brandon hooks the art to the mechanic -- animations fire, the character actually does the thing on screen. The slice starts to feel like a game. Jeremy narrates the wiring" },
-  { name: "Build 4 -- Playable Space",           tag: "BLOCK C · BUILD",   duration: 12 * 60, desc: "Brandon lays the imported art into an actual playable scene -- level layout, collisions, camera follow -- so the mechanic runs in a real environment instead of an empty test scene. Not rushed: this is what makes the slice testable. Jeremy narrates the scene setup. (FX and juice are their own future episode, not crammed in here)" },
-  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Breath before the final push. Zac posts giveaway reminder, winner drawn after the show" },
-  { name: "Build 5 -- Final Integration",        tag: "BLOCK C · BUILD",   duration: 12 * 60, desc: "Last push. Brandon ties the slice together to hit the END STATE -- one mechanic, real art, real feel, playable. Jeremy keeps the technical narration going. Code Studio errors named plainly, no apology" },
-  { name: "Live Game Test -- Clip 2",            tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Brandon hits play. The slice works or it does not, both are real. Jeremy and Tony react genuinely. Jeremy gives a one-sentence technical read on the result. NOTE VOD TIMESTAMP" },
+  { name: "Build 1 -- Re-establish & Target",    tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon gets last week's slice running live again and locks today's specific target on screen. Jeremy narrates for late joiners and the Godot audience. The build is moving by the end of this block" },
+  { name: "Build 2 -- Core System",              tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon builds the main new system for the slice this week. Jeremy leads game design discussion -- how this system changes the game -- during longer code stretches. Narrate every 5 min" },
+  { name: "Progress Check 1",                    tag: "BLOCK B",           duration: 8 * 60,  desc: "Brandon's honest check -- does the new system work, what is rough, what is left. Jeremy plants the next loop. Tony translates the technical state for the general viewer" },
+  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Natural breath mid-build. Zac posts giveaway reminder in chat" },
+  { name: "Build 3 -- Make It Playable",         tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon turns the system into actual gameplay -- the hazard, enemy, or objective that makes the slice a challenge instead of a sandbox. Jeremy narrates the design choices" },
+  { name: "Build 4 -- Connect the Pieces",       tag: "BLOCK B · BUILD",   duration: 18 * 60, desc: "Brandon wires the new system into the existing slice so it all runs as one thing. The episode's build starts to resolve. Jeremy narrates the integration" },
+  { name: "Progress Check 2",                    tag: "BLOCK B",           duration: 7 * 60,  desc: "Second honest check before the final push -- what is working, what still needs to land for the END STATE. Jeremy plants the game-test loop" },
+  { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "Breath before the final push. Zac posts last giveaway reminder, winner drawn after the show" },
+  { name: "Build 5 -- Final Integration",        tag: "BLOCK C · BUILD",   duration: 17 * 60, desc: "Last push. Brandon ties the slice together to hit the END STATE -- the new system, working, playable. Jeremy keeps the technical narration going. Code Studio errors named plainly, no apology" },
+  { name: "Live Game Test -- Priority Clip",     tag: "BLOCK C · CLIP",    duration: 5 * 60,  desc: "Brandon hits play. The slice works or it does not, both are real. Jeremy and Tony react genuinely. Jeremy gives a one-sentence technical read on the result. NOTE VOD TIMESTAMP" },
   { name: "Retrospective",                       tag: "BLOCK C",           duration: 10 * 60, desc: "Jeremy asks four questions in order: what did you set out to build, what got built, what broke and why, what does that tell us about next week. Tease the next slice" },
-  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the unresolved Rift Runners thread, and FX + juice getting their own full show. Hard stop at 11:30 AM PT" },
+  { name: "Outro",                               tag: "OUTRO",             duration: 5 * 60,  desc: "Tony CTA -- makko.ai and discord.gg/makko. Brandon teases next week -- the unresolved Rift Runners thread, and FX + juice still waiting for their own full show. Hard stop at 11:30 AM PT" },
 ];
 
 const TOTAL_DURATION = SEGMENTS.reduce((a, s) => a + s.duration, 0);
@@ -823,8 +881,8 @@ const OFFSETS = (() => {
   return arr;
 })();
 
-// Hardcoded show start: June 17, 2026 at 8:30 AM PDT (UTC-7) = 15:30 UTC
-const DEFAULT_START = Date.UTC(2026, 5, 17, 15, 30, 0);
+// Hardcoded show start: June 24, 2026 at 8:30 AM PDT (UTC-7) = 15:30 UTC
+const DEFAULT_START = Date.UTC(2026, 5, 24, 15, 30, 0);
 
 // State
 let scheduledStart = DEFAULT_START; // unix ms
@@ -908,32 +966,111 @@ function fmtClock(d) {
   return h + ':' + String(m).padStart(2, '0') + ' ' + ampm;
 }
 
+// ---- Live notes (saved locally per device, survive refresh) ----
+const SHOW_ID = 'ep007';
+const NOTES_KEY = 'makko-ros-notes-' + SHOW_ID;
+let notes = {};
+try { notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch (e) { notes = {}; }
+function saveNotes() {
+  try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch (e) {}
+}
+function insertStamp(ta, i) {
+  const stampText = '[' + fmtHMS(elapsedTotal) + '] ';
+  const start = (ta.selectionStart != null) ? ta.selectionStart : ta.value.length;
+  const end = (ta.selectionEnd != null) ? ta.selectionEnd : ta.value.length;
+  ta.value = ta.value.slice(0, start) + stampText + ta.value.slice(end);
+  const pos = start + stampText.length;
+  ta.focus();
+  ta.setSelectionRange(pos, pos);
+  notes[i] = ta.value;
+  saveNotes();
+}
+function copyAllNotes() {
+  const lines = ['MAKE IT LIVE -- Ep 007 -- Show Notes', ''];
+  let any = false;
+  SEGMENTS.forEach((seg, i) => {
+    const n = (notes[i] || '').trim();
+    if (n) {
+      any = true;
+      lines.push(String(i + 1).padStart(2, '0') + ' -- ' + seg.name);
+      lines.push(n);
+      lines.push('');
+    }
+  });
+  const out = any ? lines.join('\n') : 'No notes yet.';
+  navigator.clipboard.writeText(out).then(() => {
+    const b = document.getElementById('btnCopyNotes');
+    const prev = b.textContent;
+    b.textContent = any ? 'Copied' : 'No notes yet';
+    setTimeout(() => { b.textContent = 'Copy all notes'; }, 1600);
+  });
+}
+
+// Sidebar is built once; only state (classes + fill widths) updates per frame,
+// so the notes textareas keep focus and content while the timer runs.
+let segNodes = [];
+
 function buildSidebar() {
   $sidebar.innerHTML = '';
+  segNodes = [];
   SEGMENTS.forEach((seg, i) => {
     const div = document.createElement('div');
     div.className = 'seg';
-    if (i < currentIndex) div.classList.add('completed');
-    if (i === currentIndex && !showComplete) div.classList.add('active');
-    let fillPct = 0;
-    if (i < currentIndex) fillPct = 100;
-    else if (i === currentIndex && !showComplete) {
-      fillPct = ((seg.duration - remaining) / seg.duration) * 100;
-    }
-    div.innerHTML =
+
+    const top = document.createElement('div');
+    top.className = 'seg-top';
+    top.innerHTML =
       '<div class="seg-num">' + String(i + 1).padStart(2, '0') + '</div>' +
       '<div class="seg-body">' +
         '<div class="seg-tag">' + seg.tag + '</div>' +
         '<div class="seg-name">' + seg.name + '</div>' +
         (seg.desc ? '<div class="seg-desc">' + seg.desc + '</div>' : '') +
       '</div>' +
-      '<div class="seg-dur">' + fmtMS(seg.duration) + '</div>' +
-      '<div class="seg-bar"><div class="seg-bar-fill" style="width:' + fillPct + '%"></div></div>';
-    div.addEventListener('click', () => {
-      manualMode = true;
-      jumpTo(i);
-    });
+      '<div class="seg-dur">' + fmtMS(seg.duration) + '</div>';
+    top.addEventListener('click', () => { manualMode = true; jumpTo(i); });
+    div.appendChild(top);
+
+    const noteWrap = document.createElement('div');
+    noteWrap.className = 'seg-notes';
+    const ta = document.createElement('textarea');
+    ta.className = 'seg-note-input';
+    ta.rows = 2;
+    ta.placeholder = 'Notes…';
+    ta.value = notes[i] || '';
+    ta.addEventListener('input', () => { notes[i] = ta.value; saveNotes(); });
+    ta.addEventListener('click', (e) => e.stopPropagation());
+    const stampBtn = document.createElement('button');
+    stampBtn.type = 'button';
+    stampBtn.className = 'note-stamp';
+    stampBtn.textContent = '⌖ time';
+    stampBtn.title = 'Insert current show timecode';
+    stampBtn.addEventListener('click', (e) => { e.stopPropagation(); insertStamp(ta, i); });
+    noteWrap.appendChild(ta);
+    noteWrap.appendChild(stampBtn);
+    div.appendChild(noteWrap);
+
+    const bar = document.createElement('div');
+    bar.className = 'seg-bar';
+    const fill = document.createElement('div');
+    fill.className = 'seg-bar-fill';
+    bar.appendChild(fill);
+    div.appendChild(bar);
+
     $sidebar.appendChild(div);
+    segNodes.push({ div, fill });
+  });
+  updateSidebar();
+}
+
+function updateSidebar() {
+  segNodes.forEach((node, i) => {
+    const seg = SEGMENTS[i];
+    node.div.classList.toggle('completed', i < currentIndex);
+    node.div.classList.toggle('active', i === currentIndex && !showComplete);
+    let fillPct = 0;
+    if (i < currentIndex) fillPct = 100;
+    else if (i === currentIndex && !showComplete) fillPct = ((seg.duration - remaining) / seg.duration) * 100;
+    node.fill.style.width = Math.max(0, Math.min(100, fillPct)) + '%';
   });
 }
 
@@ -948,7 +1085,7 @@ function render() {
     $onAir.classList.remove('live');
     $onAir.classList.remove('scheduled');
     $onAirLabel.textContent = 'Off Air';
-    buildSidebar();
+    updateSidebar();
     return;
   }
   $stage.classList.remove('complete');
@@ -1009,7 +1146,7 @@ function render() {
     $onAirLabel.textContent = 'Standby';
   }
 
-  buildSidebar();
+  updateSidebar();
 }
 
 // Sync engine — when scheduledStart is set and not in manual mode, recompute state from wall clock
@@ -1291,6 +1428,12 @@ document.addEventListener('keydown', (e) => {
   document.getElementById('sidebarSub').textContent = SEGMENTS.length + ' Segments · ' + h + 'h ' + String(m).padStart(2, '0') + 'm';
   document.getElementById('segTotal').textContent = SEGMENTS.length;
 })();
+
+// Notes export button
+document.getElementById('btnCopyNotes').addEventListener('click', copyAllNotes);
+
+// Build the sidebar once (creates the notes textareas), then start
+buildSidebar();
 
 // Init: URL hash overrides; otherwise use hardcoded DEFAULT_START
 const urlStart = readHashSchedule();
