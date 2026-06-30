@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAKE IT LIVE -- Ep 007 -- Run of Show</title>
+<title>MAKE IT LIVE -- Ep 008 -- Run of Show</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -810,7 +810,7 @@
 
   <aside class="sidebar">
     <div class="sidebar-head">
-      <div class="sidebar-brand">Make It Live · Ep 007</div>
+      <div class="sidebar-brand">Make It Live · Ep 008</div>
       <div class="sidebar-title">Run of Show</div>
       <div class="sidebar-sub" id="sidebarSub">15 Segments</div>
       <button class="notes-export" id="btnCopyNotes">Copy all notes</button>
@@ -855,7 +855,7 @@
 const SEGMENTS = [
   { name: "Hook",                                tag: "BLOCK 0",           duration: 3 * 60,  desc: "Tony cold opens -- states the scope contract: where the Rift Runners slice landed last week, the one thing it gains by 11:30am, what we are NOT building today. Plants three loops, then delivers logistics, AskMakko hashtag, and giveaway pointer" },
   { name: "Sector Scavengers Update",            tag: "BLOCK A · FEATURE", duration: 12 * 60, desc: "Tony primary. The recurring feature -- what changed in Sector Scavengers this week, gameplay or art, plus any community video worth showing. Jeremy adds commentary. Keep it to time" },
-  { name: "Recap -- Where We Left Off",          tag: "BLOCK A · RECAP",   duration: 8 * 60,  desc: "Jeremy and Brandon. Tight recap of last week's Rift Runners slice -- the mechanic and playable space that got built in Godot. Bridges the episodes for returning and new viewers" },
+  { name: "Recap -- Where We Left Off",          tag: "BLOCK A · RECAP",   duration: 8 * 60,  desc: "Jeremy and Brandon. Tight recap of where Rift Runners stands in Godot so far -- the mechanic, the playable space, and the system added last week. Bridges the episodes for returning and new viewers" },
   { name: "This Week's Slice: Where It Stands",  tag: "BLOCK A · START",   duration: 12 * 60, desc: "Brandon primary. The START STATE on screen -- the current Godot project after last week, and the exact addition we are building today. Jeremy probes the technical setup. Locks the scope before the build" },
   { name: "Natural Break",                       tag: "BREAK",             duration: 5 * 60,  desc: "No formal structure. Jeremy, Tony, and Brandon let the energy settle. Zac posts giveaway entry instructions in YouTube and Twitch chat" },
   { name: "Build 1 -- Re-establish & Target",    tag: "BLOCK B · BUILD",   duration: 20 * 60, desc: "Brandon gets last week's slice running live again and locks today's specific target on screen. Jeremy narrates for late joiners and the Godot audience. The build is moving by the end of this block" },
@@ -881,8 +881,8 @@ const OFFSETS = (() => {
   return arr;
 })();
 
-// Hardcoded show start: June 24, 2026 at 8:30 AM PDT (UTC-7) = 15:30 UTC
-const DEFAULT_START = Date.UTC(2026, 5, 24, 15, 30, 0);
+// Hardcoded show start: July 1, 2026 at 8:30 AM PDT (UTC-7) = 15:30 UTC
+const DEFAULT_START = Date.UTC(2026, 6, 1, 15, 30, 0);
 
 // State
 let scheduledStart = DEFAULT_START; // unix ms
@@ -967,7 +967,7 @@ function fmtClock(d) {
 }
 
 // ---- Live notes (saved locally per device, survive refresh) ----
-const SHOW_ID = 'ep007';
+const SHOW_ID = 'ep008';
 const NOTES_KEY = 'makko-ros-notes-' + SHOW_ID;
 let notes = {};
 try { notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch (e) { notes = {}; }
@@ -986,7 +986,7 @@ function insertStamp(ta, i) {
   saveNotes();
 }
 function copyAllNotes() {
-  const lines = ['MAKE IT LIVE -- Ep 007 -- Show Notes', ''];
+  const lines = ['MAKE IT LIVE -- Ep 008 -- Show Notes', ''];
   let any = false;
   SEGMENTS.forEach((seg, i) => {
     const n = (notes[i] || '').trim();
